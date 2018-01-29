@@ -6,8 +6,9 @@ const passport = require('passport');
 const config = require('./config');
 
 // Auth
-const processAuth = require('./auth');
+const auth = require('./auth');
 const FacebookStrategy = require('passport-facebook').Strategy;
+var GoogleStrategy = require('passport-google-oauth').OAuthStrategy;
 
 // Defining apis
 const mainController = require('./controllers/mainController');
@@ -24,9 +25,11 @@ mongoose.connect(config.getDbConnectionString());
 // setting middleware
 app.use('/public', express.static(__dirname + '/public'));
 app.use(session({ secret: 'SQRLE', resave: false, saveUninitialized: true }));
+
 app.use(passport.initialize());
 app.use(passport.session());
-passport.use(new FacebookStrategy(config.fbAuth, processAuth));
+passport.use(new FacebookStrategy(config.fbAuth, auth.processFbAuth));
+passport.use(new GoogleStrategy(config.googAuth, auth.processGoogAuth));
 
 // initiating apis
 loginController(app);

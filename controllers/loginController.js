@@ -12,11 +12,16 @@ module.exports = (app) => {
   });
 
   app.get('/auth/facebook', passport.authenticate('facebook'));
-
   app.get('/auth/facebook/callback', passport.authenticate('facebook', {
     successRedirect: '/',
     failureRedirect: '/login',
   }));
+
+  app.get('/auth/google', passport.authenticate('google'));
+  app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }),
+  (req, res) => {
+    res.redirect('/');
+  });
 }
   // app.post('/api/todo', function(req, res) {
     // things we can do:
