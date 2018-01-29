@@ -1,0 +1,31 @@
+{
+  "name": "book-explorer",
+  "version": "1.0.0",
+  "description": "fullstack baby!",
+  "main": "app.js",
+  "scripts": {
+    "server" : "nodemon app.js",
+    "client": "cd public && yarn start",
+    "start": "yarn client && yarn server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MaxwellKendall/book-explorer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MaxwellKendall/book-explorer/issues"
+  },
+  "homepage": "https://github.com/MaxwellKendall/book-explorer#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "ejs": "^2.5.7",
+    "express": "^4.16.2",
+    "express-session": "^1.15.6",
+    "mongoose": "^5.0.1",
+    "passport": "^0.4.0",
+    "passport-facebook": "^2.1.1"
+  }
+}
