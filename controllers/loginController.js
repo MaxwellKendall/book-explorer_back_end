@@ -1,6 +1,7 @@
 const Test = require('../models');
 const bodyParser = require('body-parser');
 const router = require('express').Router();
+const passport = require('passport');
 
 module.exports = (app) => {
   app.use(bodyParser.json()); // assumes the requests are coming in JSON
@@ -9,6 +10,13 @@ module.exports = (app) => {
   app.get('/login', (req, res, next) => {
     res.render('login');
   });
+
+  app.get('/auth/facebook', passport.authenticate('facebook'));
+
+  app.get('/auth/facebook/callback', passport.authenticate('facebook', {
+    successRedirect: '/',
+    failureRedirect: '/login',
+  }));
 }
   // app.post('/api/todo', function(req, res) {
     // things we can do:

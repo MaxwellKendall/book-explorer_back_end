@@ -4,9 +4,7 @@
   "description": "fullstack baby!",
   "main": "app.js",
   "scripts": {
-    "server" : "nodemon app.js",
-    "client": "cd public && yarn start",
-    "start": "yarn client && yarn server",
+    "start" : "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

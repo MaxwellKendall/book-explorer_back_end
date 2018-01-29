@@ -8,7 +8,7 @@ const getDbConnectionString = () => {
 const fbAuth = {
   clientID: '1901825850147397',
   clientSecret: '8f38d0ae5fa7a5876cdc3b801e996195',
-  callbackURL: "http://localhost:3000/auth/facebook/callback"
+  callbackURL: "http://localhost:8082/auth/facebook/callback"
 }
 
 module.exports = {

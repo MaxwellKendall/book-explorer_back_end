@@ -21,7 +21,7 @@ const createNewUser = profile => {
     const newUser = new models.User({
       profileId: profile.id,
       fullName: profile.displayName,
-      profilePic: profile.photos[0].value || '',
+      profilePic: '',
     });
 
     newUser.save(error => {
@@ -35,11 +35,12 @@ const createNewUser = profile => {
 };
 
 const findOne = profileId => {
-  model.findOne({ 'profileId': profileId });
+  return models.User.findOne({ 'profileId': profileId });
 };
 
 const processAuth = (accessToken, refreshToken, profile, done) => {
   // 1. Store id in req.session as browser cookie
+  console.log('process auth fired!');
   passport.serializeUser((user, done) => {
     done(null, user.id); // makes available in req.user
   });
