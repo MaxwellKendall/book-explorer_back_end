@@ -12,9 +12,9 @@ const fbAuth = {
 };
 
 const googAuth = {
-  consumerKey: '813863696388-ba6tgtm7pe2tgvul9vkqimqb1gho2oue.apps.googleusercontent.com',
-  consumerSecret: 'zLQuvaPz-HdUaQWwWrp_C2XQ',
-  callbackURL: 'http://localhost/auth/google/callback/',
+  clientID: '813863696388-ba6tgtm7pe2tgvul9vkqimqb1gho2oue.apps.googleusercontent.com',
+  clientSecret: 'zLQuvaPz-HdUaQWwWrp_C2XQ',
+  callbackURL: 'http://localhost:8082/auth/google/callback/',
 };
 
 module.exports = {

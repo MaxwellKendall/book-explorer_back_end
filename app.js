@@ -8,7 +8,7 @@ const config = require('./config');
 // Auth
 const auth = require('./auth');
 const FacebookStrategy = require('passport-facebook').Strategy;
-var GoogleStrategy = require('passport-google-oauth').OAuthStrategy;
+var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 // Defining apis
 const mainController = require('./controllers/mainController');

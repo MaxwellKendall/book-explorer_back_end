@@ -4,40 +4,42 @@ const passport = require('passport');
 const config = require('../config'); // add config for auth
 const models = require('../models');
 
-const findById = id => {
-  return new Promise((resolve, reject) => {
-    models.User.findById(id, (error, user) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(user);
-      }
+// DB Queries
+  const findById = id => {
+    return new Promise((resolve, reject) => {
+      models.User.findById(id, (error, user) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(user);
+        }
+      });
     });
-  });
-}
+  }
 
-const createNewUser = profile => {
-  return new Promise((resolve, reject) => {
-    const newUser = new models.User({
-      profileId: profile.id,
-      fullName: profile.displayName,
-      profilePic: '',
+  const createNewUser = profile => {
+    return new Promise((resolve, reject) => {
+      const newUser = new models.User({
+        profileId: profile.id,
+        fullName: profile.displayName,
+        profilePic: '',
+      });
+
+      newUser.save(error => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(newUser);
+        }
+      })
     });
+  };
 
-    newUser.save(error => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(newUser);
-      }
-    })
-  });
-};
+  const findOne = profileId => {
+    return models.User.findOne({ 'profileId': profileId });
+  };
 
-const findOne = profileId => {
-  return models.User.findOne({ 'profileId': profileId });
-};
-
+// Authorization Function
 const processFbAuth = (accessToken, refreshToken, profile, done) => {
   // 1. Store id in req.session as browser cookie
   passport.serializeUser((user, done) => {

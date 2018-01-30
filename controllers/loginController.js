@@ -17,7 +17,7 @@ module.exports = (app) => {
     failureRedirect: '/login',
   }));
 
-  app.get('/auth/google', passport.authenticate('google'));
+  app.get('/auth/google', passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] })); // add scope
   app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }),
   (req, res) => {
     res.redirect('/');
