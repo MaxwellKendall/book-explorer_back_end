@@ -2,7 +2,7 @@
 
 const passport = require('passport');
 const config = require('../config'); // add config for auth
-const models = require('../models');
+// const models = require('../models');
 
 // DB Queries
   const findById = id => {
