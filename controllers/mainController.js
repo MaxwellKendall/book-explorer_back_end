@@ -1,4 +1,4 @@
-// var Test = require('../models');
+var models = require('../models');
 var bodyParser = require('body-parser');
 const router = require('express').Router();
 

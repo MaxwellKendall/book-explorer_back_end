@@ -40,5 +40,6 @@ const db = {
 module.exports = {
   db,
   fbAuth,
+  secrets,
   googAuth,
 }
