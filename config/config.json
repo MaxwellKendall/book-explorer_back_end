@@ -1,4 +1,7 @@
 {
-  "uname": "admin",
-  "pwd": "test123"
+  "uname": "mydb_admin",
+  "pwd": "test123",
+  "host": "127.0.0.1",
+  "port": "",
+  "db": "mydb"
 }

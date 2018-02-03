@@ -7,7 +7,7 @@ const models = require('../models');
 // DB Queries
   const findById = id => {
     return new Promise((resolve, reject) => {
-      models.User.findById(id, (error, user) => {
+      models.Users.findById(id, (error, user) => {
         if (error) {
           reject(error);
         } else {
@@ -19,7 +19,7 @@ const models = require('../models');
 
   const createNewUser = profile => {
     return new Promise((resolve, reject) => {
-      const newUser = new models.User({
+      const newUser = new models.Users({
         profileId: profile.id,
         fullName: profile.displayName,
         profilePic: '',
@@ -36,7 +36,7 @@ const models = require('../models');
   };
 
   const findOne = profileId => {
-    return models.User.findOne({ 'profileId': profileId });
+    return models.Users.findOne({ 'profileId': profileId });
   };
 
 // Authorization Function
