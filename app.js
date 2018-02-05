@@ -7,9 +7,10 @@ const knex = require('knex');
 const config = require('./config');
 
 // Auth
-const auth = require('./auth');
+const processAuth = require('./auth');
 const FacebookStrategy = require('passport-facebook').Strategy;
-var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const GoodReadsStrategy = require('passport-goodreads');
 
 // Defining apis
 const mainController = require('./controllers/mainController');
@@ -22,8 +23,6 @@ app.set('view engine', 'ejs');
 
 // connecting to dB
 const db = knex(config.db);
-// const query = db.select().from('User').then(result => console.log(result));
-// console.log('config.db', query.toString());
 
 // setting middleware
 app.use('/public', express.static(__dirname + '/public'));
@@ -31,8 +30,9 @@ app.use(session({ secret: 'SQRLE', resave: false, saveUninitialized: true }));
 
 app.use(passport.initialize());
 app.use(passport.session());
-passport.use(new FacebookStrategy(config.fbAuth, auth.processFbAuth));
-passport.use(new GoogleStrategy(config.googAuth, auth.processGoogAuth));
+passport.use(new FacebookStrategy(config.fbAuth, processAuth));
+passport.use(new GoogleStrategy(config.googAuth, processAuth));
+passport.use(new GoodReadsStrategy(config.goodReadsAuth, processAuth));
 
 // initiating apis
 loginController(app);

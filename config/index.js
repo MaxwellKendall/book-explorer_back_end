@@ -1,5 +1,6 @@
 // here any environment specific variables/db connection secrets are gonna live etc...
 'use strict';
+
 const secrets = require('./config');
 const mysql = require('mysql');
 
@@ -14,6 +15,12 @@ const googAuth = {
   clientSecret: 'zLQuvaPz-HdUaQWwWrp_C2XQ',
   callbackURL: 'http://localhost:8082/auth/google/callback/',
 };
+
+const goodReadsAuth = {
+  consumerKey: 'bTdqhpzwzZcLyKeZrB79Q',
+  consumerSecret: 'c62lN62xjay6TUoEYpRgKplpvgVq229kunzR0evB4',
+  callbackURL: 'http://localhost:8082/auth/goodreads/callback'
+}
 
 /*
   This is the connection information that will be used to run migrations and seeding.
@@ -39,7 +46,8 @@ const db = {
 
 module.exports = {
   db,
-  fbAuth,
   secrets,
+  fbAuth,
   googAuth,
+  goodReadsAuth,
 }

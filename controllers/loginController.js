@@ -1,4 +1,3 @@
-// const Test = require('../models');
 const bodyParser = require('body-parser');
 const router = require('express').Router();
 const passport = require('passport');
@@ -19,6 +18,12 @@ module.exports = (app) => {
 
   app.get('/auth/google', passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] })); // add scope
   app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }),
+  (req, res) => {
+    res.redirect('/');
+  });
+
+  app.get('/auth/goodreads', passport.authenticate('goodreads'));
+  app.get('/auth/goodreads/callback', passport.authenticate('goodreads',{ failureRedirect: '/login' }),
   (req, res) => {
     res.redirect('/');
   });
