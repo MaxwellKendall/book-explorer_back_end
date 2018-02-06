@@ -10,11 +10,10 @@ module.exports = (app) => {
     res.render('login');
   });
 
-  app.get('/auth/facebook', passport.authenticate('facebook'));
-  app.get('/auth/facebook/callback', passport.authenticate('facebook', {
-    successRedirect: '/',
-    failureRedirect: '/login',
-  }));
+  app.get('/logout', (req, res) => {
+    req.logout();
+    res.redirect('/login');
+  });
 
   app.get('/auth/google', passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] })); // add scope
   app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }),

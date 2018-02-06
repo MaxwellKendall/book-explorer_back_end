@@ -8,7 +8,6 @@ const config = require('./config');
 
 // Auth
 const processAuth = require('./auth');
-const FacebookStrategy = require('passport-facebook').Strategy;
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const GoodReadsStrategy = require('passport-goodreads');
 
@@ -30,7 +29,6 @@ app.use(session({ secret: 'SQRLE', resave: false, saveUninitialized: true }));
 
 app.use(passport.initialize());
 app.use(passport.session());
-passport.use(new FacebookStrategy(config.fbAuth, processAuth));
 passport.use(new GoogleStrategy(config.googAuth, processAuth));
 passport.use(new GoodReadsStrategy(config.goodReadsAuth, processAuth));
 

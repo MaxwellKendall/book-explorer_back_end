@@ -19,8 +19,9 @@ module.exports = {
         return connection.schema.createTableIfNotExists('Users', (table) => {
             table.increments('id');
             table.string('name');
-            table.string('address1');
-            table.string('uid');
+            table.string('photoUrl');
+            table.string('google');
+            table.string('goodreads');
         }).catch((err) => {
             console.error(err);
         // because knex objects return bluebird promises, we can use .finally here
