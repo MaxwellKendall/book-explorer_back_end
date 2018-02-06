@@ -2,99 +2,116 @@
 
 const passport = require('passport');
 const config = require('../config'); // add config for auth
-const models = require('../models');
+const db = require('knex')(config.db);
+
+// DB Update Statements
+const providerSpecificUpdate = (id, profileId, provider) => {
+  if (provider === 'google') {
+    return db('Users')
+      .where('id', id)
+        .update({ 'google': `${profileId}`});
+  } else {
+    return db('Users')
+      .where('id', id)
+        .update({ 'goodreads': `${profileId}`});
+  }
+};
+
+const createNewUser = profile => {
+  if (profile.provider === 'google') {
+    return db('Users')
+    .insert({ name: `${profile.displayName}`, google: `${profile.id}`, photoUrl: `${profile._json.image.url}` });
+  } else if (profile.provider === 'goodreads') {
+    return db('Users')
+    .insert({ name: `${profile.displayName}`, goodreads: `${profile.id}` });
+  }
+};
 
 // DB Queries
-  const findById = id => {
-    return new Promise((resolve, reject) => {
-      models.Users.findById(id, (error, user) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(user);
-        }
-      });
-    });
-  }
+const findByProviderId = (provider, providerId) => {
+  return db.select('id')
+    .from('Users')
+      .where(provider, providerId);
+};
 
-  const createNewUser = profile => {
-    return new Promise((resolve, reject) => {
-      const newUser = new models.Users({
-        profileId: profile.id,
-        fullName: profile.displayName,
-        profilePic: '',
-      });
+const findByUserId = (id) => {
+  console.log('findByUserId id === ', id);
+  return db.select('id')
+    .from('Users')
+      .where('id', id);
+};
 
-      newUser.save(error => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(newUser);
-        }
-      })
-    });
-  };
-
-  const findOne = profileId => {
-    return models.Users.findOne({ 'profileId': profileId });
-  };
-
-// Authorization Function
-const processFbAuth = (accessToken, refreshToken, profile, done) => {
-  // 1. Store id in req.session as browser cookie
+const grAuth = (done, profile) => {
   passport.serializeUser((user, done) => {
-    done(null, user.id); // makes available in req.user
+    console.log('user from serializeUser on grAuth: ', user);
+    done(null, user.id);
   });
-// 2. Take browser cookie and retrieve corresponding data from session store
+  
   passport.deserializeUser((id, done) => {
-    findById(id)
-      .then(user => done(null, user))
+    console.log('id from deserailizeUser:', id); // { id: 5 }
+    findByUserId(id)
+      .then(result => {
+        done(null, result[0]);
+      })
       .catch(error => console.log(`error on findById: ${error}`));
   });
-// 3. take the profile ID and query the db
-  findOne(profile.id)
+  findByProviderId(profile.provider, profile.id)
     .then(result => {
-      if (result) {
-        // a. if a profile already exists, this is a returning user
-        done(null, result);
+      if (result.length !== 0) {
+        done(null, result[0]);
       } else {
-        // b. if it doesnt, new user, create new profile
         createNewUser(profile)
-          .then(newUser => done(null, newUser))
+          .then(newUser => {
+            console.log(newUser);
+            done(null, newUser[0]);
+          })
           .catch(err => console.log(err));
       }
     })
     .catch(err => console.log(err));
-};
+}
 
-const processGoogAuth = (accessToken, refreshToken, profile, done) => {
-    // 1. Store id in req.session as browser cookie
-    passport.serializeUser((user, done) => {
-      done(null, user.id); // makes available in req.user
-    });
-  // 2. Take browser cookie and retrieve corresponding data from session store
-    passport.deserializeUser((id, done) => {
-      findById(id)
-        .then(user => done(null, user))
-        .catch(error => console.log(`error on findById: ${error}`));
-    });
-  // 3. take the profile ID and query the db
-    findOne(profile.id)
+const googAuth = (done, profile) => {
+  passport.serializeUser((user, done) => {
+    console.log('user from serializeUser on googAuth: ', user);
+    done(null, user);
+  });
+  
+  passport.deserializeUser((id, done) => {
+    console.log('id from deserailizeUser on googAuth:', id); // { id: 5 }
+    findByUserId(id)
       .then(result => {
-        if (result) {
-          // a. if a profile already exists, this is a returning user
-          done(null, result);
-        } else {
-          // b. if it doesnt, new user, create new profile
-          createNewUser(profile)
-            .then(newUser => done(null, newUser))
-            .catch(err => console.log(err));
-        }
+        done(null, result[0]);
       })
-      .catch(err => console.log(err));
-};
+      .catch(error => console.log(`error on findById on googAuth: ${error}`));
+  });
+  findByProviderId(profile.provider, profile.id)
+    .then(result => {
+      if (result.length !== 0) {
+        done(null, result[0]);
+      } else {
+        createNewUser(profile)
+          .then(newUser => {
+            console.log('newUser from googAuth', newUser);
+            done(null, newUser[0]);
+          })
+          .catch(err => console.log(err));
+      }
+    })
+    .catch(err => console.log(err));
+}
 
-module.exports = {
-  processFbAuth,
-  processGoogAuth,
-};
+const processAuth = (req, token, tokenSecret, profile, done) => {
+  const provider = profile.provider;
+  if (!req.user && profile.provider === 'google') {
+    googAuth(done, profile);
+  } else if (!req.user && profile.provider === 'goodreads') {
+    grAuth(done, profile);
+  } else {
+      providerSpecificUpdate(req.user.id, profile.id, provider)
+        .then(res => done(null, req.user))
+        .catch(err => console.log(err));
+    }
+  }
+
+module.exports = processAuth;

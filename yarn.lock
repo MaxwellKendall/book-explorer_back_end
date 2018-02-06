@@ -1014,6 +1014,13 @@ passport-facebook@^2.1.1:
   dependencies:
     passport-oauth2 "1.x.x"
 
+passport-goodreads@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/passport-goodreads/-/passport-goodreads-1.0.0.tgz#4d604404d7b310a829e0daa120f3f831e6f6795a"
+  dependencies:
+    passport-oauth1 "1.x.x"
+    xml2js "0.1.x"
+
 passport-google-oauth1@1.x.x:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/passport-google-oauth1/-/passport-google-oauth1-1.0.0.tgz#af74a803df51ec646f66a44d82282be6f108e0cc"
@@ -1284,6 +1291,10 @@ safe-buffer@5.1.1, safe-buffer@^5.0.1, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.1.tgz#893312af69b2123def71f57889001671eeb2c853"
 
+sax@>=0.1.1:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
+
 semver@^5.1.0:
   version "5.4.1"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.4.1.tgz#e059c09d8571f0540823733433505d3a2f00b18e"
@@ -1484,3 +1495,9 @@ winston@2.1.x:
 wrappy@1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
+
+xml2js@0.1.x:
+  version "0.1.14"
+  resolved "https://registry.yarnpkg.com/xml2js/-/xml2js-0.1.14.tgz#5274e67f5a64c5f92974cd85139e0332adc6b90c"
+  dependencies:
+    sax ">=0.1.1"

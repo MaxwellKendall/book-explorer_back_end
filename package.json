@@ -28,6 +28,7 @@
     "objection": "^0.9.4",
     "passport": "^0.4.0",
     "passport-facebook": "^2.1.1",
+    "passport-goodreads": "^1.0.0",
     "passport-google-oauth": "^1.0.0",
     "rhinozug": "^1.1.4",
     "rhinozug-cli": "^0.1.7"

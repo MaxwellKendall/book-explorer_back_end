@@ -1,4 +1,4 @@
-var models = require('../models');
+var models = require('../db/models');
 var bodyParser = require('body-parser');
 const router = require('express').Router();
 
@@ -8,6 +8,11 @@ module.exports = (app) => {
 
   app.get('/', (req, res) => {
     res.render('index');
+  });
+
+  app.get('/activeuser', (req, res) => {
+    req.session.user ? res.send({ "userid" : `${req.session.passport.user}` }) : res.send({ "userid" : '' });
+    // res.send(req);
   });
 }
   // app.post('/api/todo', function(req, res) {
