@@ -1,19 +1,23 @@
 const express = require('express');
 const mysql = require('mysql');
 const session = require('express-session');
-const passport = require('passport');
 const knex = require('knex');
 
-const config = require('./config');
-
 // Auth
-const processAuth = require('./auth');
+const flash = require('connect-flash');
+const { processOAuth }  = require('./auth');
+const { processLocalAuth }  = require('./auth');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const GoodReadsStrategy = require('passport-goodreads');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
 
 // Defining apis
 const mainController = require('./controllers/mainController');
 const loginController = require('./controllers/loginController');
+
+// config
+const config = require('./config');
 
 // Initiating app
 const app = express();
@@ -29,8 +33,10 @@ app.use(session({ secret: 'SQRLE', resave: false, saveUninitialized: true }));
 
 app.use(passport.initialize());
 app.use(passport.session());
-passport.use(new GoogleStrategy(config.googAuth, processAuth));
-passport.use(new GoodReadsStrategy(config.goodReadsAuth, processAuth));
+app.use(flash());
+passport.use(new LocalStrategy(processLocalAuth));
+passport.use(new GoogleStrategy(config.googAuth, processOAuth));
+passport.use(new GoodReadsStrategy(config.goodReadsAuth, processOAuth));
 
 // initiating apis
 loginController(app);
