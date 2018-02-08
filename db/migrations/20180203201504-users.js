@@ -22,6 +22,8 @@ module.exports = {
             table.string('photoUrl');
             table.string('google');
             table.string('goodreads');
+            table.string('username');
+            table.string('password');
         }).catch((err) => {
             console.error(err);
         // because knex objects return bluebird promises, we can use .finally here
@@ -31,7 +33,7 @@ module.exports = {
         });
     },
 
-    down: function () {
+    down: () => {
         let connection = rz.getConnection(config);
         // Add reverting commands here.
         // Return a promise to correctly handle asynchronicity.
