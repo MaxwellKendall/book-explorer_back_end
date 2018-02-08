@@ -12,18 +12,12 @@
   </head>
   <body>
     <div class="container">
-      <form action="/auth/local" method="post">
-        <div>
-            <label>Username:</label>
-            <input type="text" name="username"/>
-        </div>
-        <div>
-            <label>Password:</label>
-            <input type="password" name="password"/>
-        </div>
-        <div>
-            <input type="submit" value="Log In"/>
-        </div>
+      <form action="/auth/local" id="form" method="POST">
+        <label>Username:</label>
+        <input type="text" name="username"/>
+        <label>Password:</label>
+        <input type="password" name="password"/>
+        <input type="submit" value="Log In"/>
     </form>
     <button><a id='register'>Register via Email</a></button>
     <button><a href='/auth/google'>Sign In with Google</a></button>

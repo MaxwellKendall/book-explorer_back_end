@@ -1,6 +1,7 @@
 const bodyParser = require('body-parser');
 const router = require('express').Router();
 const passport = require('passport');
+const { processRegistration } = require('../auth');
 
 module.exports = (app) => {
   app.use(bodyParser.json()); // assumes the requests are coming in JSON
@@ -27,8 +28,11 @@ module.exports = (app) => {
   // Local Auth
   // Register
   app.post('/auth/register', (req, res) => {
-    console.log(req);
+    const { email, password } = req.body;
+    processRegistration(email, password);
+    res.redirect('/', { message: 'Welcome!' });
   });
+
   // Sign in
   app.post('/auth/local', passport.authenticate('local', { successRedirect: '/', failureRedirect: '/login', failureFlash: true }));
 }

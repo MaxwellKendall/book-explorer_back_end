@@ -84,7 +84,7 @@ const db = require('knex')(config.db);
           })
           .catch(err => console.log(err));
       }
-  }
+  };
 
   // 2.
   const processLocalAuth = (username, password, done) => {
@@ -101,9 +101,14 @@ const db = require('knex')(config.db);
         // console.log('checkCredentials Result: ', res[0].id);
       })
       .catch(err => console.log('Local Login failed. checkSignIn Error: ', err));
-  }
+  };
+
+  const processRegistration = (username, password, done) => {
+    
+  };
 
 module.exports = {
   processOAuth,
   processLocalAuth,
+  processRegistration,
 }

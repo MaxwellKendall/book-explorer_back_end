@@ -20,8 +20,10 @@ const appendModal = () => {
     registrationForm.setAttribute('method', 'POST');
     emailLabel = createHTML('label', 'registration-form__email-label', null, 'Email: ');
     emailInput = createHTML('input', 'registration-form__email-input');
+    emailInput.setAttribute('name', 'email');
     passwordLabel = createHTML('label', 'registration-form__password-label', null, 'Password: ');
     passwordInput = createHTML('input', 'registration-form__password-input');
+    passwordInput.setAttribute('name', 'password');
     submitButton = createHTML('button', 'submit', null, 'Register');
     // adding events
     exitButton.addEventListener('click', () => {
@@ -52,5 +54,5 @@ const showModal = () => {
     }
 }
 
-
 document.getElementById('register').addEventListener('click', showModal);
+document.getElementById('form').addEventListener('submit', () => { console.log('form submitted !')});
