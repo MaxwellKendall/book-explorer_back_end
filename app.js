@@ -5,11 +5,10 @@ const knex = require('knex');
 
 // Auth
 const flash = require('connect-flash');
-const { processOAuth }  = require('./auth');
-const { processLocalAuth }  = require('./auth');
+const { processOAuth, processLocalAuth, processRegistration }  = require('./auth');
+const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const GoodReadsStrategy = require('passport-goodreads');
-const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 
 // Defining apis

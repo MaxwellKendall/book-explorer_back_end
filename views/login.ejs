@@ -4,6 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.2.14/dist/semantic.min.css">
     <style>
       .hidden {
         display: none;
@@ -12,7 +13,7 @@
   </head>
   <body>
     <div class="container">
-      <form action="/auth/local" id="form" method="POST">
+      <form action="/auth/local" id="form__sign-in" method="POST">
         <label>Username:</label>
         <input type="text" name="username"/>
         <label>Password:</label>
@@ -24,5 +25,6 @@
     <button><a href='/auth/goodreads'>Sign In with Good Reads</a></button>
     </div>
   </body>
+  <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.14/semantic.min.js"></script>
   <script src='./public/modal.js'></script>
 </html>

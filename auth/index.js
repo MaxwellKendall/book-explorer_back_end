@@ -12,7 +12,10 @@ const db = require('knex')(config.db);
       .insert({ name: `${profile.displayName}`, google: `${profile.id}`, photoUrl: `${profile._json.image.url}` });
     } else if (profile.provider === 'goodreads') {
       return db('Users')
-      .insert({name: `${profile.displayName}`, goodreads: `${profile.id}` });
+      .insert({ name: `${profile.displayName}`, goodreads: `${profile.id}` });
+    } else if (profile.provider === 'local') {
+      return db('Users')
+      .insert({ username: `${profile.username}`, password: `${profile.password}` });
     }
   }; 
 
@@ -37,16 +40,22 @@ const db = require('knex')(config.db);
         .where(provider, providerId);
   };
   // 2. 
-  const checkCredentials = (username, password) => {
-    return db.select('id')
+  const checkCredentials = (username, password = null) => {
+    if (password !== null) {
+      return db.select('id')
       .from('Users')
-        .where({'password': password, 'username': username });
+      .where({'password': password, 'username': username });
+    } else if (password === null) {
+      return db.select('id')
+      .from('Users')
+      .where({'username': username });
+    }
   }
 
 // Processing logic
+
   // 1.
   const processOAuth = (req, token, tokenSecret, profile, done) => {
-    console.log('ProcessOAuth: ', profile);
     const provider = profile.provider;
     if (!req.user) {
       // req.user is defined if user is logged in.
@@ -58,7 +67,6 @@ const db = require('knex')(config.db);
       passport.deserializeUser((id, done) => {
         // take whats on the stream and convert to an object...? Used to check DB prior to doing this for some reason...?
         done(null, id);
-        console.log('deserializeUser id param value: ', id);
       });
       findIdByProviderId(profile.provider, profile.id)
       // based on provider (google or good reads) check to see if user exists yet
@@ -88,7 +96,6 @@ const db = require('knex')(config.db);
 
   // 2.
   const processLocalAuth = (username, password, done) => {
-    console.log('ProcessLocalAuth executed with params: ', username, password);
     checkCredentials(username, password)
       .then(res => {
         passport.serializeUser((user, done) => {
@@ -98,13 +105,30 @@ const db = require('knex')(config.db);
           done(null, id);
         });
         done(null, res[0].id);
-        // console.log('checkCredentials Result: ', res[0].id);
       })
       .catch(err => console.log('Local Login failed. checkSignIn Error: ', err));
   };
 
-  const processRegistration = (username, password, done) => {
-    
+  // 3.
+  const processRegistration = (username, password) => {
+    // validate password in front end; using string.prototype.match(regexpression in string form);
+   return new Promise((resolve, reject) => {
+    checkCredentials(username)
+      .then(resp1 => {
+        if (resp1.length === 0) {
+          createNewUser({ username, password, provider: 'local' })
+            .then(resp2 => {
+              resolve({ id: resp2[0], username, password });
+            });
+        } else {
+          resolve(false);
+        }
+      })
+      .catch(err => {
+        console.log('ERROR ProcessRegistration(): ', err);
+        resolve(false);
+      });
+   })
   };
 
 module.exports = {

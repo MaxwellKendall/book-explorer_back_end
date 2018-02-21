@@ -2,6 +2,7 @@ const bodyParser = require('body-parser');
 const router = require('express').Router();
 const passport = require('passport');
 const { processRegistration } = require('../auth');
+var jsonParser = bodyParser.json();
 
 module.exports = (app) => {
   app.use(bodyParser.json()); // assumes the requests are coming in JSON
@@ -26,13 +27,18 @@ module.exports = (app) => {
   });
 
   // Local Auth
-  // Register
-  app.post('/auth/register', (req, res) => {
-    const { email, password } = req.body;
-    processRegistration(email, password);
-    res.redirect('/', { message: 'Welcome!' });
+  // app.post('/auth/register', passport.authenticate('local', { successRedirect: '/', failureRedirect: '/login', failureFlash: true }))
+  app.post('/auth/register', jsonParser, (req, res, next) => {
+    console.log('REQ.BODY: ', req.body);
+    const { username, password } = req.body;
+    processRegistration(username, password)
+      .then(user => {
+        console.log('response from process registration: ', user);
+        setTimeout(() => {
+          res.send(JSON.stringify({ user }));
+        }, 1000)
+      })
+      .catch(err => console.log('PROCESS REGISTRATION ERROR: ', err))
   });
-
-  // Sign in
   app.post('/auth/local', passport.authenticate('local', { successRedirect: '/', failureRedirect: '/login', failureFlash: true }));
 }
