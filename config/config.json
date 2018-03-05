@@ -3,5 +3,13 @@
   "pwd": "test123",
   "host": "127.0.0.1",
   "port": "",
-  "db": "mydb"
+  "db": "mydb",
+  "google": {
+    "clientId": "813863696388-ba6tgtm7pe2tgvul9vkqimqb1gho2oue.apps.googleusercontent.com",
+    "clientSecret": "zLQuvaPz-HdUaQWwWrp_C2XQ"
+  },
+  "goodReads": {
+    "consumerKey": "bTdqhpzwzZcLyKeZrB79Q",
+    "consumerSecret": "c62lN62xjay6TUoEYpRgKplpvgVq229kunzR0evB4"
+  }
 }

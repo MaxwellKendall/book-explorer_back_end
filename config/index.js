@@ -5,15 +5,15 @@ const secrets = require('./config');
 const mysql = require('mysql');
 
 const googAuth = {
-  clientID: '813863696388-ba6tgtm7pe2tgvul9vkqimqb1gho2oue.apps.googleusercontent.com',
-  clientSecret: 'zLQuvaPz-HdUaQWwWrp_C2XQ',
+  clientID: secrets.google.clientID,
+  clientSecret: secrets.google.clientSecret,
   callbackURL: 'http://localhost:8082/auth/google/callback/',
   passReqToCallback: true,
 };
 
 const goodReadsAuth = {
-  consumerKey: 'bTdqhpzwzZcLyKeZrB79Q',
-  consumerSecret: 'c62lN62xjay6TUoEYpRgKplpvgVq229kunzR0evB4',
+  consumerKey: secrets.goodReads.consumerKey,
+  consumerSecret: secrets.goodReads.consumerSecret,
   callbackURL: 'http://localhost:8082/auth/goodreads/callback',
   passReqToCallback: true,
 }
