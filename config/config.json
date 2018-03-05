@@ -5,7 +5,7 @@
   "port": "",
   "db": "mydb",
   "google": {
-    "clientId": "813863696388-ba6tgtm7pe2tgvul9vkqimqb1gho2oue.apps.googleusercontent.com",
+    "clientID": "813863696388-ba6tgtm7pe2tgvul9vkqimqb1gho2oue.apps.googleusercontent.com",
     "clientSecret": "zLQuvaPz-HdUaQWwWrp_C2XQ"
   },
   "goodReads": {
