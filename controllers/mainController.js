@@ -14,9 +14,9 @@ module.exports = (app) => {
   });
 
   app.get('/activeuser', (req, res) => {
-    console.log(req.user);
     queries.findUserById(req.user)
-      // .then(user => console.log(user));
-      .then(user => res.send(JSON.stringify(user)));
+      .then(user => {
+        res.send(JSON.stringify(user));
+      });
   });
 }

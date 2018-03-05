@@ -7,7 +7,7 @@ var jsonParser = bodyParser.json();
 module.exports = (app) => {
   app.use(bodyParser.json()); // assumes the requests are coming in JSON
   app.use(bodyParser.urlencoded({ extended: true })); // takes the data from the url and extends it...?
-  
+
   // Login / Logout
   app.get('/login', (req, res, next) => { res.render('login'); });
   app.get('/logout', (req, res) => { req.logout(); res.redirect('/login'); });
@@ -27,18 +27,17 @@ module.exports = (app) => {
   });
 
   // Local Auth
-  // app.post('/auth/register', passport.authenticate('local', { successRedirect: '/', failureRedirect: '/login', failureFlash: true }))
+  // (1) Registration
   app.post('/auth/register', jsonParser, (req, res, next) => {
-    console.log('REQ.BODY: ', req.body);
     const { username, password } = req.body;
     processRegistration(username, password)
       .then(user => {
-        console.log('response from process registration: ', user);
         setTimeout(() => {
           res.send(JSON.stringify({ user }));
         }, 1000)
       })
       .catch(err => console.log('PROCESS REGISTRATION ERROR: ', err))
   });
+  // (2) Local Sign in
   app.post('/auth/local', passport.authenticate('local', { successRedirect: '/', failureRedirect: '/login', failureFlash: true }));
 }

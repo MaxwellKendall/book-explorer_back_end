@@ -16,11 +16,18 @@ module.exports = {
         // Return a promise to correctly handle asynchronicity.
 
         // Example that creates two tables with a fk between them:
-        return connection.table('Users', (table) => {
-            table.string('uid');
+        return connection.schema.createTableIfNotExists('Users', (table) => {
+            table.increments('id');
+            table.string('lib_id');
+            table.string('name');
+            table.string('photoUrl');
+            table.string('google');
+            table.string('goodreads');
+            table.string('username');
+            table.string('password');
         }).catch((err) => {
             console.error(err);
-        // because knex objects return bluebird promises, we can use .finally here
+            // because knex objects return bluebird promises, we can use .finally here
         }).finally(() => {
             // always destory the connection when you are done, regardless of outcome
             connection.destroy();
@@ -28,19 +35,18 @@ module.exports = {
     },
 
     down: () => {
-        let connection = knex(config);
+        let connection = rz.getConnection(config);
         // Add reverting commands here.
         // Return a promise to correctly handle asynchronicity.
 
         // Example that undoes the commands above:
-        return connection.table('Users', (table) => {
-            table.dropColumn('uid');
-        }).catch((err) => {
-            console.error(err);
-        // because knex objects return bluebird promises, we can use .finally here
-        }).finally(() => {
-            // always destory the connection when you are done, regardless of outcome
-            connection.destroy();
-        });
+        return connection.schema.dropTable('Users')
+            .catch((err) => {
+                console.error(err);
+            })
+            .finally(() => {
+                // always destroy the connection when you are done, regardless of outcome
+                connection.destroy();
+            });
     }
 };

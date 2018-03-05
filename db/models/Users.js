@@ -1,5 +1,9 @@
 'use strict';
 const { Model }  = require('objection');
+let config = require('../config/default');
+const knex = require('knex');
+
+Model.knex(knex(config));
 
 class Users extends Model {
   static get tableName() {

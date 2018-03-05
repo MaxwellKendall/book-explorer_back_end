@@ -1,21 +1,21 @@
 'use strict';
-
 const passport = require('passport');
 const config = require('../config'); // add config for auth
 const db = require('knex')(config.db);
+const uuidv = require('uuid/v1');
 
 // DB Insert/Update Statements
   // 1.
   const createNewUser = profile => {
     if (profile.provider === 'google') {
       return db('Users')
-      .insert({ name: `${profile.displayName}`, google: `${profile.id}`, photoUrl: `${profile._json.image.url}` });
+      .insert({ name: `${profile.displayName}`, google: `${profile.id}`, photoUrl: `${profile._json.image.url}`, lib_id: uuidv(), });
     } else if (profile.provider === 'goodreads') {
       return db('Users')
-      .insert({ name: `${profile.displayName}`, goodreads: `${profile.id}` });
+      .insert({ name: `${profile.displayName}`, goodreads: `${profile.id}`, lib_id: uuidv(), });
     } else if (profile.provider === 'local') {
       return db('Users')
-      .insert({ username: `${profile.username}`, password: `${profile.password}` });
+      .insert({ username: `${profile.username}`, password: `${profile.password}`, lib_id: uuidv(), });
     }
   }; 
 
@@ -53,7 +53,6 @@ const db = require('knex')(config.db);
   }
 
 // Processing logic
-
   // 1.
   const processOAuth = (req, token, tokenSecret, profile, done) => {
     const provider = profile.provider;
@@ -84,10 +83,8 @@ const db = require('knex')(config.db);
         .catch(err => console.log(err));
     } else {
       // handles case when user is logged in but authroization is occurring because they're connecting their accounts
-      console.log('right before providerSpecific Update: ', req.user);
         providerSpecificUpdate(req.user, profile)
           .then(res => {
-            console.log(`response from providerSpecific Update: ${res}`);
             done(null, req.user);
           })
           .catch(err => console.log(err));
@@ -119,7 +116,8 @@ const db = require('knex')(config.db);
           createNewUser({ username, password, provider: 'local' })
             .then(resp2 => {
               resolve({ id: resp2[0], username, password });
-            });
+            })
+            .catch(err => console.log('error on createNewUser ', err));
         } else {
           resolve(false);
         }

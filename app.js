@@ -2,6 +2,7 @@ const express = require('express');
 const mysql = require('mysql');
 const session = require('express-session');
 const knex = require('knex');
+const cors = require('cors');
 
 // Auth
 const flash = require('connect-flash');
@@ -14,6 +15,7 @@ const LocalStrategy = require('passport-local').Strategy;
 // Defining apis
 const mainController = require('./controllers/mainController');
 const loginController = require('./controllers/loginController');
+const bookController = require('./controllers/bookController');
 
 // config
 const config = require('./config');
@@ -29,6 +31,7 @@ const db = knex(config.db);
 // setting middleware
 app.use('/public', express.static(__dirname + '/public'));
 app.use(session({ secret: 'SQRLE', resave: false, saveUninitialized: true }));
+app.use(cors());
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -40,5 +43,6 @@ passport.use(new GoodReadsStrategy(config.goodReadsAuth, processOAuth));
 // initiating apis
 loginController(app);
 mainController(app);
+bookController(app);
 
 app.listen(port);
