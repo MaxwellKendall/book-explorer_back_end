@@ -2,4 +2,4 @@
 yarn-error.log
 README.md
 /target
-/config/config.json
+config/config.json
